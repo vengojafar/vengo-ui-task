@@ -186,3 +186,42 @@ body {
     overflow: hidden;
 }
 ```
+
+### `<body>`
+
+#### Close button
+- Allows user to go back to the standard Vengo UI
+```html
+<div class="closeButtonContainer">
+   <button id="btnClose" class="buttonClose">Close</button>
+</div>
+```
+
+#### Pages are `<div>`
+- Naming convention: name[page#]
+- All are hidden except `#page1`
+```html
+<div id="page1">...</div>
+```
+```html
+<div id="page2" hidden>...</div>
+```
+
+#### Hidden checkboxes
+- Used to record user selections
+- Data contains question and answer text
+```html
+<div style="visibility: collapse;">
+   <input type="checkbox" id="chkTried1" data-survey-answer-text="Yes" data-survey-question-text="Have you tried a Clinique product before?"/>
+   <input type="checkbox" id="chkTried2" data-survey-answer-text="No" data-survey-question-text="Have you tried a Clinique product before?"/>
+</div>
+```
+```html
+<div style="visibility: collapse;">
+   <input type="checkbox" id="chkShop1" data-survey-answer-text="Online" data-survey-question-text="Where do you shop for skincare products?" />
+   <input type="checkbox" id="chkShop2" data-survey-answer-text="Sephora" data-survey-question-text="Where do you shop for skincare products?" />
+   <input type="checkbox" id="chkShop3" data-survey-answer-text="Ulta" data-survey-question-text="Where do you shop for skincare products?" />
+   <input type="checkbox" id="chkShop4" data-survey-answer-text="Department stores" data-survey-question-text="Where do you shop for skincare products?" />
+   <input type="checkbox" id="chkShop5" data-survey-answer-text="Drug stores" data-survey-question-text="Where do you shop for skincare products?" />
+</div>
+```
