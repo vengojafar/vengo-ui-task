@@ -98,3 +98,91 @@ $('#inputEmail').keyboard({
 	autoAccept: true
 });
 ```
+
+#### Navigate between pages
+- Assumption that `div` `id` starts with `page`
+```js
+function navigateToPage(to, from) {
+	$("#page" + from).hide();
+	$("#page" + to).show();
+}
+```
+
+#### Check email for valid formatting
+```js
+function validateEmail(email) {
+	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	//var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+	return re.test(email);
+}
+```
+
+#### Assemble JSON to be passed to Vengo app
+```js
+function assembleJson() { ... }
+```
+Example output:
+```json
+{
+   "type": 0,
+   "info": "jafar@vengolabs.com",
+   "properties":
+   {
+      "email_address": "jafar@vengolabs.com",
+      "opt_in": true,
+      "timestamp": "2019-10-09T19:12:26.244Z",
+      "survey_responses":
+      [
+         {
+	    "survey_question_text": "Have you tried a Clinique product before?",
+	    "survey_answer_text": "Yes"
+	 },
+	 {
+	    "survey_question_text": "Where do you shop for skincare products?",
+	    "survey_answer_text": "Sephora"
+	 },
+	 {
+	    "survey_question_text": "Where do you shop for skincare products?",
+	    "survey_answer_text": "Ulta"
+	 }
+      ]
+   }
+}
+```
+
+### `<style>`
+#### Set SweetAlert font
+```css
+.swal2-popup {
+    font-family: 'Segoe UI';
+}
+```
+
+#### Fix keyboard to bottom of screen
+```css
+.ui-keyboard {
+    font-size: 30px;
+    text-align: center;
+    background: rgba(0, 0, 0, .8);
+    width: 100%;
+    height: auto;
+    left: 0;
+    top: auto;
+    bottom: 0px;
+    position: fixed;
+    white-space: nowrap;
+    overflow-x: auto;
+    padding-bottom: 20px;
+}
+```
+
+#### Hide overflow
+```css
+body {
+    background: url(assets/background.jpg) repeat center center fixed;
+    background-size: cover;
+    background-size: 100% 100%;
+    margin: 0;
+    overflow: hidden;
+}
+```
