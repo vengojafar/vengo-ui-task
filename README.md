@@ -5,9 +5,9 @@
 - Task
 
 ## Background
-Vengo, a New York based company, has created a network of over 1000 digital vending kiosks across the US.
+[Vengo](https://vengolabs.com), a NYC-based company, has created a network of over 1000 digital vending kiosks across the US.
 Our machines connect brands and consumers in locations previously inaccessible to retail such as gyms, colleges, and hotels.
-Our software enables each brand to customize the user experience they want to present to consumers.
+Our software gives brands the ability to display customized user experiences to engage consumers.
 We accomplish this by embedding a Chromium-based browser within our .NET application.
 
 ## Example
