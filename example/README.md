@@ -1,6 +1,8 @@
 # Example: Clinique
- - Single HTML file
- - Javascript and CSS in head (to avoid caching)
+Brands and media agencies are required to conform to our asset guidelines when providing creative.
+These guidelines can be found at our software integration site: [`https://vengolabs.app/network/sampling/`](https://vengolabs.app/network/sampling/).
+The _Example User Journey_ displayed on that site represents a typical user flow.
+An interactive version of this journey is available at this demo site: [`https://vengolabs.com/demo/clinique_id/`](https://vengolabs.com/demo/clinique_id/).
 
 ## Main Folders and Content
 
