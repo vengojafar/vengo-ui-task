@@ -1,0 +1,571 @@
+<!------------------------------- 
+    Version: 2
+    Updated: 2018-01-21
+    Created: 2018-01-21
+    Author: Jafar Mohammed, Vengo Inc.
+ ------------------------------->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Clinique ID</title>
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/sweetalert2.all.min.js"></script>
+    <link href="css/sweetalert2.min.css" rel="stylesheet">
+    <link href="css/jquery-ui.min.css" rel="stylesheet">
+    <script src="js/jquery.keyboard.min.js"></script>
+    <link href="css/keyboard.min.css" rel="stylesheet">
+
+    <script>
+        var resetTimer;
+        var DEFAULT_TIMEOUT = 60000 * 2;
+        var numSurveys = 2;
+
+        $(document).ready(function () {
+            resetTimer = setTimeout(function () { resetUI(); }, DEFAULT_TIMEOUT);
+
+            $(document).click(function(e) {
+                var id = e.target.id;          
+                console.log(id);
+
+                if ((id).startsWith("page1"))
+                {
+                    navigateToPage(2, 1);
+                }
+                else if (id == "btnPage2Yes")
+                {
+                    $("#chkTried1").prop("checked", true);
+                    $("#chkTried2").prop("checked", false);
+                    navigateToPage(3, 2);
+                }
+                else if (id == "btnPage2No")
+                {
+                    $("#chkTried1").prop("checked", false);
+                    $("#chkTried2").prop("checked", true);
+                    navigateToPage(3, 2);
+                }
+                else if ((e.target.id).startsWith("btnShop"))
+                {
+                    var index = (e.target.id).substr(-1);
+                    if ($("#chkShop" + index).is(':checked'))
+                    {
+                        $("#chkShop" + index).prop("checked", false);
+                        $("#btnShop" + index).css("background-color", "");
+                    }
+                    else
+                    {
+                        $("#chkShop" + index).prop("checked", true);
+                        $("#btnShop" + + index).css("background-color", "#A0D7C5");
+                        
+                    }
+                    showQuestion3ScreenNext()
+                }
+                else if (e.target.id == "question3-screen-next")
+                {
+                    navigateToPage(4, 3);
+                }
+                else if (e.target.id == "btnPage4Submit")
+                {
+                    //navigateToPage(5, 4);
+                    validateAndSubmit();
+                }
+                else if (e.target.id == "btnPage2Back")
+                {
+                    navigateToPage(1, 2);
+                }
+                else if (e.target.id == "btnPage3Back")
+                {
+                    navigateToPage(2, 3);
+                }
+                else if (e.target.id == "btnPage4Back")
+                {
+                    navigateToPage(3, 4);
+                }
+                else if (e.target.id == "btnClose")
+                {
+                    resetUI();
+                }
+
+                clearTimeout(resetTimer);
+                resetTimer = setTimeout(function () { resetUI(); }, DEFAULT_TIMEOUT);
+            });
+
+            $('#inputEmail').keyboard({
+                display: {
+                    'bksp': '\u2190',
+                    'accept': 'Enter',
+                    'default': 'ABC',
+                    'meta1': '.?123',
+                    'meta2': '#+=',
+                    'com': ".com",
+                    's': "\u21e7"
+                },
+                maxLength: 70,
+                layout: 'custom',
+                customLayout: {
+                    'default': [
+                        'q w e r t y u i o p {bksp}',
+                        'a s d f g h j k l',
+                        '{s} z x c v b n m @ . .com',
+                        '{meta1} _ - @gmail.com @yahoo.com @hotmail.com'
+                    ],
+                    'shift': [
+                        'Q W E R T Y U I O P {bksp}',
+                        'A S D F G H J K L',
+                        '{s} Z X C V B N M @ . .com',
+                        '{meta1} _ - @gmail.com @yahoo.com @hotmail.com'
+                    ],
+                    'meta1': [
+                        '1 2 3 4 5 6 7 8 9 0 {bksp}',
+                        '` | { } % ^ * / \'',
+                        '{meta2} $ & ~ # = + . {meta2}',
+                        '{default} {space} ! ? {default}'
+                    ],
+                    'meta2': [
+                        '[ ] { } \u2039 \u203a ^ * " , {bksp}',
+                        '\\ | / < > $ \u00a3 \u00a5 \u2022',
+                        '{meta1} \u20ac & ~ # = + . {meta1}',
+                        '{default} {space} ! ? {default}'
+                    ]
+                },
+                usePreview: false,
+                preventPaste: true,
+                autoAccept: true
+            });
+        });
+
+        function navigateToPage(to, from) {
+            $("#page" + from).hide();
+            $("#page" + to).show();
+
+            var pageId = ("#page" + to);
+        }
+
+        function showQuestion3ScreenNext()
+        {
+            if ($("#chkShop1").is(':checked') || $("#chkShop2").is(':checked') || $("#chkShop3").is(':checked') || $("#chkShop4").is(':checked') || $("#chkShop5").is(':checked'))
+            {
+                $("#question3-screen-next").show();
+            }
+            else
+            {
+                $("#question3-screen-next").hide();
+            }
+        }
+
+        //Validate email for proper format
+        function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            //var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            return re.test(email);
+        }
+
+        //Submit input if valid; display error if not
+        function validateAndSubmit() {
+            var email = $("#inputEmail").val();
+
+            var emailIssue = false;
+            if (email == "" || (email.match(/@/g) || []).length > 1 || !validateEmail(email)) {
+                emailIssue = true;
+            }
+
+            if (emailIssue) {
+                Swal({
+                    type: 'error',
+                    title: 'Please enter a valid email address',
+                    allowOutsideClick: false,
+                });
+            }
+            else {
+                uploadData(assembleJson());
+            }
+        }
+
+        function assembleJson() {
+            var email = $("#inputEmail").val();
+            var optIn = $("#chkOptIn").is(':checked');
+
+            var surveyResponses = [];
+
+            for (var i = 0; i < 2; i++)
+            {
+                if ($("#chkTried" + (i + 1)).is(':checked'))
+                {
+                    surveyResponses.push({
+                        "survey_question_text": $("#chkTried" + (i + 1)).data("survey-question-text"),
+                        "survey_answer_text": $("#chkTried" + (i + 1)).data("survey-answer-text"),
+                    });
+                }
+            }
+
+            for (var i = 0; i < 5; i++)
+            {
+                if ($("#chkShop" + (i + 1)).is(':checked'))
+                {
+                    surveyResponses.push({
+                        "survey_question_text": $("#chkShop" + (i + 1)).data("survey-question-text"),
+                        "survey_answer_text": $("#chkShop" + (i + 1)).data("survey-answer-text"),
+                    });
+                }
+            }
+
+            var properties = {
+                "timestamp": new Date().toISOString(),
+                "email_address": email,
+                "opt_in" : optIn,
+                "survey_responses" : surveyResponses
+            };
+
+            var redemption = {
+                "type": 0,
+                "info": email,
+                "properties": properties
+            };
+
+            console.log(redemption);
+            return JSON.stringify(redemption);
+        }
+
+        //VENGO APP JS CALLBACKS-----------------------------------------------------------
+        //Closes the browser and returns to the app
+        function resetUI() {
+            try {
+                vengo.reset();
+            }
+            catch (err) {
+                console.log("Reset UI");
+                location.reload();
+            }
+        }
+
+        //Pass data to app
+        function uploadData(json) {
+            try {
+                navigateToPage(5, 4);
+                //vengo.survey(json);
+                
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
+    </script>
+
+    <style type="text/css">
+        @font-face
+        {
+            font-family: font;
+            src: url(fonts/fontreg.otf);
+        }
+
+        @font-face
+        {
+            font-family: fontbold;
+            src: url(fonts/fontbold.otf);
+        }
+
+        .swal2-popup {
+            font-family: 'Segoe UI';
+        }
+
+        .ui-keyboard {
+            /* adjust overall keyboard size using "font-size" */
+            font-size: 30px;
+            text-align: center;
+            background: rgba(0, 0, 0, .8);
+            /* include the following setting to place the
+        keyboard at the bottom of the browser window */
+            width: 100%;
+            height: auto;
+            left: 0;
+            top: auto;
+            bottom: 0px;
+            position: fixed;
+            white-space: nowrap;
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+
+        .ui-corner-all {
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+
+        .ui-widget-content {
+            border: 0px;
+        }
+
+        .ui-keyboard-button {
+            border-radius: 6px;
+            min-width: 2.2em;
+        }
+
+        body {
+            background: url(assets/background.jpg) repeat center center fixed;
+            background-size: cover;
+            background-size: 100% 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .surveyButtonsContainer {
+            z-index: 2;
+            position: absolute;
+            top: 200px;
+            width: 100%;
+            text-align: center;
+            font-family: font;
+        }
+
+        .button {
+            width: 200px;
+            height: 100px;
+            font-family: font;
+            font-weight: bold;
+            font-size: 36px;
+            text-decoration: none;
+            display: inline-block;
+            background-color: white;
+            color: black;
+            text-shadow: none;
+            border-color:black;
+            border-style: solid;
+            border-width: 4px;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .buttonYes {
+            margin-right: 10px;
+        }
+
+        .buttonNo {
+            margin-left: 10px;
+        }
+
+        .buttonLocation {
+            color: green;
+            width: 248px;
+        }
+
+        .inputHeader {
+            position: absolute;
+            width: 100%;
+            top: 300px;
+            color: black;
+            font-family: font;
+            font-weight: bold;
+            font-size: 48px;
+            text-align: center;
+        }
+
+        .inputContainer {
+            position: absolute;
+            width: 100%;
+            top: 400px;
+            text-align: center;
+        }
+
+        .dataInput {
+            color: black;
+            font-family: font;
+            font-size: 36px;
+            background: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            text-shadow: none;
+            border-color:black;
+            border-style: solid;
+            border-width: 4px;
+            border-radius: 4px;
+            padding: 20px;
+            width: 1000px;
+        }
+
+        .buttonSubmit {
+            height: 94px;
+            padding-left: 60px;
+            padding-right: 60px;
+            font-family: font;
+            font-size: 42px;
+            font-weight: bold;
+            background-color: #5EB895;
+            color: white;
+            border: 0;
+            border-radius: 2px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6);
+            margin-left: 20px;
+        }
+
+        .closeButtonContainer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            margin-top: 20px;
+            margin-right: 20px;
+            z-index: 2;
+        }
+
+        .backButtonContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .buttonClose,
+        .buttonBack {
+            color: white;
+            background: black;
+            font-family: font;
+            font-size: 24px;
+            font-weight: 500;
+            border: 0;
+            border-radius: 6px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        .mainForeground {
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 2;
+        }
+
+        .questionTitleFormat{
+            font-weight:600;
+            color:black;
+            font-size: 44px;
+        }
+
+        #btnShop1, #btnShop2, #btnShop3, #btnShop4, #btnShop5
+        {
+            width: 310px;
+            height: 230px;
+            display: inline-block;
+            margin: 10px;
+            margin-left: 20px;
+            margin-right: 20px;
+            border: 0px;
+            background-color: transparent;
+            box-shadow: none;
+        }
+
+        .nextButton
+        {
+            position: fixed;
+            width: 300px;
+            height: 100px;
+            bottom: 200px;
+            right: 60px;
+            background: url(assets/next_background.png);
+            z-index: 3;
+        }
+
+        #chkOptIn
+        {
+            -webkit-transform: scale(2.2);
+            transform: scale(2.2);
+            z-index: 2;
+            margin-right: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="closeButtonContainer">
+        <button id="btnClose" class="buttonClose">Close</button>
+    </div>
+    
+    <div id="page1">
+        <video id="page1Video" autoplay muted loop >
+            <source src="assets/main_background.webm" type="video/webm">
+        </video>
+    </div>
+
+    <div id="page2" hidden>
+        <div class="backButtonContainer">
+            <button id="btnPage2Back" class="buttonBack">Back</button>
+        </div>
+        <div class="surveyButtonsContainer">
+            <br /><br /><br /><br /><br /><br /><br /><br />
+            <p class="questionTitleFormat">Have you tried a Clinique product before?</p>
+            <br />
+            <button id="btnPage2Yes" class="button buttonYes">Yes</button>
+            <button id="btnPage2No" class="button buttonNo">No</button>
+        </div>
+        <div style="visibility: collapse;">
+            <input type="checkbox" id="chkTried1" data-survey-answer-text="Yes" data-survey-question-text="Have you tried a Clinique product before?"/>
+            <input type="checkbox" id="chkTried2" data-survey-answer-text="No" data-survey-question-text="Have you tried a Clinique product before?"/>
+        </div>
+    </div>
+
+    <div id="page3" hidden>
+        <div class="backButtonContainer">
+            <button id="btnPage3Back" class="buttonBack">Back</button>
+        </div>
+        <div id="question3-screen-next" class="nextButton" hidden></div>
+        <div class="surveyButtonsContainer">
+            <p class="questionTitleFormat">Where do you shop for skincare products?<br/>(select all that apply)</p>
+            <br />
+            <div>
+                <button id="btnShop1" style="background: url(assets/online.png) no-repeat center;" />
+                <button id="btnShop2" style="background: url(assets/sephora.png) no-repeat center;" />
+                <button id="btnShop3" style="background: url(assets/ulta.png) no-repeat center;" />
+            </div>
+            <br />
+            <div>
+                <button id="btnShop4" style="background: url(assets/retail.png) no-repeat center;" />
+                <button id="btnShop5" style="background: url(assets/pharmacy.png) no-repeat center;" />
+            </div>
+            
+        </div>
+        <div style="visibility: collapse;">
+                <input type="checkbox" id="chkShop1" data-survey-answer-text="Online" data-survey-question-text="Where do you shop for skincare products?" />
+                <input type="checkbox" id="chkShop2" data-survey-answer-text="Sephora" data-survey-question-text="Where do you shop for skincare products?" />
+                <input type="checkbox" id="chkShop3" data-survey-answer-text="Ulta" data-survey-question-text="Where do you shop for skincare products?" />
+                <input type="checkbox" id="chkShop4" data-survey-answer-text="Department stores" data-survey-question-text="Where do you shop for skincare products?" />
+                <input type="checkbox" id="chkShop5" data-survey-answer-text="Drug stores" data-survey-question-text="Where do you shop for skincare products?" />
+            </div>
+    </div>
+
+    <div id="page4" hidden>
+        <div class="backButtonContainer">
+            <button id="btnPage4Back" class="buttonBack">Back</button>
+        </div>
+        <div class="inputHeader">
+            Enter your email to receive your free Clinique iD sample
+        </div>
+        <div class="inputContainer">
+            <input id="inputEmail" type="text" class="dataInput" placeholder="Email Address" />
+            <button id="btnPage4Submit" class="buttonSubmit">Submit</button>
+            <br /><br /><br />
+            <div>
+                <input type="checkbox" name="chkOptIn" id="chkOptIn" checked>
+                <label style="font-size: 28px; color: black; font-family: font; border: none; background: transparent; text-shadow: none;" for="chkOptIn">Yes, I would like to receive information, samples, and offers</label>
+            </div>
+            <br /><br />
+            
+        </div>
+    </div>
+
+    <div id="page5" hidden>
+        <img id="imgPage5" src="assets/page5.jpg" />
+    </div>
+
+    <div id="page6" hidden>
+        <div class="inputHeader">
+            <br>
+            We encountered an issue dispensing your sample.
+            <br>
+            Please check back later.
+        </div>
+    </div>
+</body>
+
+</html>
