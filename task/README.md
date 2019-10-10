@@ -1,7 +1,7 @@
 # Task: Califia Farms
 Create a single page HTML file "UI" similar to the [example](https://github.com/vengojafar/vengo-ui-task/tree/master/example).
 The user should be able to click through the screens and submit data.
-JSON info should be printed to the console
+JSON info should be printed to the console [the same way as the example](https://github.com/vengojafar/vengo-ui-task/tree/master/example#assemble-json-to-be-passed-to-vengo-app)
 
 ## User Journey
 
