@@ -33,6 +33,7 @@ JSON info should be printed to the console
 
 
 ## Notes
+- Any framework can be used
 - Background image file included (if needed)
 - Gotham font included (if needed)
 
